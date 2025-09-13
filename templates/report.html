@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>RealtyBot - Analysis Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .report-container { margin-top: 18px; } /* 90% of 20px */
+        .chart-container { margin-bottom: 27px; max-width: 90%; } /* 90% of 30px */
+        .reason-list, .improvement-list { margin-top: 9px; } /* 90% of 10px */
+        .back-button { margin-top: 18px; margin-bottom: 18px; } /* 90% of 20px */
+        h1 { font-size: 2.25rem; } /* 90% of ~2.5rem */
+        h2 { font-size: 1.8rem; } /* 90% of ~2rem */
+        h3 { font-size: 1.575rem; } /* 90% of ~1.75rem */
+        h4 { font-size: 1.35rem; } /* 90% of ~1.5rem */
+        p, li { font-size: 0.9rem; } /* 90% of 1rem */
+        .btn { font-size: 0.9em; padding: 5.4px 10.8px; } /* 90% of 1em, 6px, 12px */
+    </style>
+</head>
+<body>
+    <div class="container report-container">
+        <h1>RealtyBot: Deal Analysis Report</h1>
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Property Details</h2>
+                <p><strong>Property Type:</strong> {{ report.Property_Type }}</p>
+                <p><strong>Location:</strong> {{ report.Location }}</p>
+                <p><strong>Purchase Price:</strong> ${{ report.Purchase_Price | float | round(2) }}</p>
+                <p><strong>Net Operating Income (NOI):</strong> ${{ report.NOI | float | round(2) }}</p>
+                <p><strong>Cap Rate:</strong> {{ report.Cap_Rate | float | round(2) }}%</p>
+                <p><strong>Debt Service Coverage Ratio (DSCR):</strong> {{ report.DSCR | float | round(2) }}</p>
+                <p><strong>Cash-on-Cash Return:</strong> {{ report.Cash_on_Cash | float | round(2) }}%</p>
+                <p><strong>Internal Rate of Return (IRR):</strong> {{ report.IRR | float | round(2) }}%</p>
+                <p><strong>Occupancy Rate:</strong> {{ report.Occupancy_Rate | float | round(2) }}%</p>
+                <p><strong>Future Value:</strong> ${{ report.Future_Value | float | round(2) }}</p>
+                <h3>Conclusion</h3>
+                <p>{{ report.Conclusion | replace('\n', '<br>') | safe }}</p>
+                {% if report.Reasons %}
+                <h4>Reasons for Concern</h4>
+                <ul class="reason-list">
+                    {% for reason in report.Reasons %}
+                    <li>{{ reason }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% if report.Improvements %}
+                <h4>Suggestions to Improve the Deal</h4>
+                <ul class="improvement-list">
+                    {% for improvement in report.Improvements %}
+                    <li>{{ improvement }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+        </div>
+        <h2>Charts</h2>
+        {% for chart in report.Charts %}
+        <div class="chart-container">
+            {{ chart | safe }}
+        </div>
+        {% endfor %}
+        <div class="back-button">
+            <p>Ready for another deal? Start a new analysis!</p>
+            <a href="/reset" class="btn btn-primary">Start New Analysis</a>
+        </div>
+    </div>
+</body>
+</html>
