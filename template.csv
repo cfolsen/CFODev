@@ -1,0 +1,2 @@
+Property_Type,Location,Purchase_Price,Gross_Rent,Vacancy_Rate,Expenses,Expense_Growth,Loan_Amount,Interest_Rate,Loan_Term,NOI_Growth,Appreciation_Rate,Exit_Cap_Rate,Hold_Period
+Office,Orlando FL,1000000,100000,0.05,35000,0.03,800000,0.05,30,0.03,0.03,0.06,5
