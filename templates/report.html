@@ -1,3 +1,5 @@
+<!-- templates/report.html -->
+<!-- Displays analysis reports for one or more properties. -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,19 +21,20 @@
 <body>
     <div class="container report-container">
         <h1>RealtyBot: Deal Analysis Report</h1>
-        <div class="card">
+        {% for report in reports %}
+        <div class="card mb-4">
             <div class="card-body">
-                <h2 class="card-title">Property Details</h2>
+                <h2 class="card-title">{{ report.Property_Type }} at {{ report.Location }}</h2>
                 <p><strong>Property Type:</strong> {{ report.Property_Type }}</p>
                 <p><strong>Location:</strong> {{ report.Location }}</p>
-                <p><strong>Purchase Price:</strong> ${{ report.Purchase_Price | float | round(2) }}</p>
-                <p><strong>Net Operating Income (NOI):</strong> ${{ report.NOI | float | round(2) }}</p>
+                <p><strong>Purchase Price:</strong> ${{ report.Purchase_Price | float | round(2) | format_number }}</p>
+                <p><strong>NOI:</strong> ${{ report.NOI | float | round(2) | format_number }}</p>
                 <p><strong>Cap Rate:</strong> {{ report.Cap_Rate | float | round(2) }}%</p>
-                <p><strong>Debt Service Coverage Ratio (DSCR):</strong> {{ report.DSCR | float | round(2) }}</p>
+                <p><strong>DSCR:</strong> {{ report.DSCR | float | round(2) }}</p>
                 <p><strong>Cash-on-Cash Return:</strong> {{ report.Cash_on_Cash | float | round(2) }}%</p>
-                <p><strong>Internal Rate of Return (IRR):</strong> {{ report.IRR | float | round(2) }}%</p>
+                <p><strong>IRR:</strong> {{ report.IRR | float | round(2) }}%</p>
                 <p><strong>Occupancy Rate:</strong> {{ report.Occupancy_Rate | float | round(2) }}%</p>
-                <p><strong>Future Value:</strong> ${{ report.Future_Value | float | round(2) }}</p>
+                <p><strong>Future Value:</strong> ${{ report.Future_Value | float | round(2) | format_number }}</p>
                 <h3>Conclusion</h3>
                 <p>{{ report.Conclusion | replace('\n', '<br>') | safe }}</p>
                 {% if report.Reasons %}
@@ -50,12 +53,13 @@
                     {% endfor %}
                 </ul>
                 {% endif %}
+                <h2>Charts</h2>
+                {% for chart in report.Charts %}
+                <div class="chart-container">
+                    {{ chart | safe }}
+                </div>
+                {% endfor %}
             </div>
-        </div>
-        <h2>Charts</h2>
-        {% for chart in report.Charts %}
-        <div class="chart-container">
-            {{ chart | safe }}
         </div>
         {% endfor %}
         <div class="back-button">
@@ -63,5 +67,11 @@
             <a href="/reset" class="btn btn-primary">Start New Analysis</a>
         </div>
     </div>
+    <script>
+        // Format numbers with commas
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    </script>
 </body>
 </html>
